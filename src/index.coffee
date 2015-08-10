@@ -27,15 +27,15 @@ ga.Initializer = React.createClass
   displayName: 'GAInitializer'
   componentDidMount: ->
     window[window.GoogleAnalyticsObject].l = new Date().getTime()
-    @addScript() unless scriptIsAdded
-  addScript: ->
+    @addScript(this.props.protocol || 'https') unless scriptIsAdded
+  addScript: (protocol) ->
     # script tags added in `render()` aren't evaluated so we need to mutate the
     # DOM.
     scriptIsAdded = true
     el = document.createElement 'script'
     el.type = 'text/javascript'
     el.async = true
-    el.src = '//www.google-analytics.com/analytics.js'
+    el.src = protocol + '://www.google-analytics.com/analytics.js'
     s = document.getElementsByTagName('script')[0]
     s.parentNode.insertBefore el, s
   render: ->
